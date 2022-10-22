@@ -35,12 +35,12 @@ $student = $students->getAll();
                     <select class="form-select" name="classCode">
                         <option selected>Select Course</option>
                         <?php foreach ($course as $subject) { ?>
-                            <option value="<?php echo $subject['id'] ?>"><?php echo $subject['name'] ?></option>
+                            <option value="<?php echo $subject['classCode'] ?>"><?php echo $subject['name'] ?></option>
                         <?php } ?>
                     </select>
                 </div>
                 <div class="mb-3">
-                    <!-- <input type="hidden" value="<?php echo $student['id'] ?>" name="studentID"> -->
+                    <!-- <input type="hidden" value="<?php echo $student['id'] ?>" name="id"> -->
                     <label class="form-label">Student Name</label>
                     <select class="form-select" name="studentID">
                         <option selected>Select Student</option>
@@ -48,7 +48,6 @@ $student = $students->getAll();
                             <option value="<?php echo $pupil['id'] ?>"><?php echo $pupil['name'] ?></option>
                         <?php } ?>
                     </select>
-                    
                 </div>
                 <div class="mb-3">
                     <input type="submit" class="btn btn-primary" value="Submit" name="enrollStudent">
@@ -69,8 +68,8 @@ if (isset($_POST['enrollStudent'])) {
     try {
         $roster = new ClassRoster($_POST['classCode'], $_POST['studentID']);
         $roster->setConnection($connection);
-        $roster->save();
-        header("Location: " . "view.php?" . "id=". $_GET['id'] );
+        $roster->save($classCode, $studentID);
+        header("Location: " . "view.php?" . "id=". $_GET['id']);
         exit();
     } catch (Exception $e) {
         error_log($e->getMessage());

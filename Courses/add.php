@@ -62,7 +62,6 @@ $teacher = $teachers->getAll();
 if (isset($_POST['submitClass'])) {
 
     try {
-
         $course = new Course($_POST['name'], $_POST['description'], $_POST['classCode'], $_POST['teacherID']);
         $course->setConnection($connection);
         $course->save();

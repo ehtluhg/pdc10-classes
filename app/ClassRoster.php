@@ -13,10 +13,9 @@ class ClassRoster
 	// Database Connection Object
 	protected $connection;
 
-	public function __construct($classCode = null, $enrolledAt = null, $studentID = null)
+	public function __construct($classCode = null, $studentID = null)
 	{
 		$this->classCode = $classCode;
-		$this->enrolledAt = $enrolledAt;
 		$this->studentID = $studentID;
 	}
 
@@ -45,15 +44,15 @@ class ClassRoster
 		$this->connection = $connection;
 	}
 
-	public function save()
+	public function save($classCode, $studentID)
 	{
 		try {
 			$sql = "INSERT INTO classes_rosters SET classCode=:classCode, studentID=:studentID";
 			$statement = $this->connection->prepare($sql);
 
 			return $statement->execute([
-				':classCode' => $this->getCode(),
-				':studentID' => $this->getStudentID()
+				':classCode' => $classCode,
+				':studentID' => $studentID
 			]);
 
 		} catch (Exception $e) {
@@ -114,7 +113,6 @@ class ClassRoster
 			error_log($e->getMessage());
 		}
 	}
-
 
 	public function update($classCode, $studentID, $enrolledAt)
 	{
@@ -190,7 +188,8 @@ class ClassRoster
 			$sql = 'SELECT students.name AS studentName,
 			students.studentNumber AS studentsNumber,
 			students.id AS studentID,
-			classes_rosters.enrolledAt AS enrolledAt
+			classes_rosters.enrolledAt AS enrolledAt,
+			classes_rosters.id AS rosterID
 			FROM students
 			INNER JOIN classes_rosters
 			ON classes_rosters.studentID = students.id 
@@ -203,7 +202,7 @@ class ClassRoster
 
 			$row = $statement->fetch();
 
-			// $this->id = $row['id'];
+			$this->id = $row['id'];
 			$this->studentName = $row['studentName'];
 			$this->enrolledAt = $row['enrolledAt'];
 			$this->studentNumber = $row['studentNumber'];

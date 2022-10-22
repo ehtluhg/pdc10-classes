@@ -43,7 +43,7 @@ $roster = $classRoster->getRoster();
                     Class Rosters
                 </div>
                 <div class="card-body">
-                    <a role="button" class="btn btn-secondary m-3" href="add.php">Add Roster</a>
+                    <!-- <a role="button" class="btn btn-secondary m-3" href="add.php">Add Roster</a> -->
                     <table class="table table-hover">
                         <thead>
                             <tr>
