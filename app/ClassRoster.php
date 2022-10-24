@@ -44,15 +44,15 @@ class ClassRoster
 		$this->connection = $connection;
 	}
 
-	public function save($classCode, $studentID)
+	public function save()
 	{
 		try {
 			$sql = "INSERT INTO classes_rosters SET classCode=:classCode, studentID=:studentID";
 			$statement = $this->connection->prepare($sql);
 
 			return $statement->execute([
-				':classCode' => $classCode,
-				':studentID' => $studentID
+                ':classCode' => $this->getCode(),
+                ':studentID' => $this->getStudentID()
 			]);
 
 		} catch (Exception $e) {
@@ -114,21 +114,18 @@ class ClassRoster
 		}
 	}
 
-	public function update($classCode, $studentID, $enrolledAt)
+	public function update($id, $classCode, $studentID, $enrolledAt)
 	{
 		try {
-			$sql = 'UPDATE classes_rosters SET classCode=?, studentID=?, enrolledAt=? WHERE id=?';
+			$sql = 'UPDATE classes_rosters SET classCode=:classCode, studentID=:studentID, enrolledAt=:enrolledAt WHERE id=:id';
 			$statement = $this->connection->prepare($sql);
 			$statement->execute([
-				$classCode,
-                $studentID,
-				$enrolledAt,
-				$this->getId()
+				':id' => $id,
+				':classCode' => $classCode,
+				':studentID' => $studentID,
+				':enrolledAt' => $enrolledAt
 			]);
 
-			$this->classCode = $classCode;
-            $this->studentNumber = $studentID;
-			$this->enrolledAt = $enrolledAt;
 
 		} catch (Exception $e) {
 			error_log($e->getMessage());

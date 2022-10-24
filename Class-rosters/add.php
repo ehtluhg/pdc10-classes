@@ -68,8 +68,9 @@ if (isset($_POST['enrollStudent'])) {
     try {
         $roster = new ClassRoster($_POST['classCode'], $_POST['studentID']);
         $roster->setConnection($connection);
-        $roster->save($classCode, $studentID);
+        $roster->save();
         header("Location: " . "view.php?" . "id=". $_GET['id']);
+        // header("Location: index.php");
         exit();
     } catch (Exception $e) {
         error_log($e->getMessage());
