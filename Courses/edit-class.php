@@ -13,6 +13,13 @@ $teachers = new Teacher('');
 $teachers->setConnection($connection);
 $teacher = $teachers->getAll();
 
-$template = $mustache->loadTemplate('edit-course');
-echo $template->render(compact('courseDetails', 'teacher'));
-?>
+if (isset($_POST['editClass'])) {
+
+    try {
+        $course->update($_POST['id'], $_POST['name'], $_POST['classCode'], $_POST['description'], $_POST['teacherID']);
+        header("Location: index.php");
+        exit();
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+    }
+}

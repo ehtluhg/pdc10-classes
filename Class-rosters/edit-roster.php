@@ -18,6 +18,14 @@ $students = new Student('');
 $students->setConnection($connection);
 $student = $students->getAll();
 
-$template = $mustache->loadTemplate('edit-roster');
-echo $template->render(compact('roster', 'course', 'student'));
-?>
+if (isset($_POST['editRoster'])) {
+
+    try {
+        $rosters->update($_POST['id'], $_POST['classCode'], $_POST['studentID'], $_POST['enrolledAt']);
+        // header("Location: " . "view.php?" . "id=". $_GET['id']);
+        header("Location: index.php");
+        exit();
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+    }
+}
